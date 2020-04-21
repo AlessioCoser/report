@@ -10,7 +10,7 @@ This plugin let you to easily download a report in PDF format.
 
 ## Install the plugin
 ```
-toggl-tracker install alessiocoser/report
+toggl-tracker install AlessioCoser/report
 ```
 
 ## Usage
