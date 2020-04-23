@@ -6,7 +6,7 @@ module.exports = function(loader, toggl, timeSlotter, asker, config) {
 
   this.run = async () => {
     const clients = await toggl.getClients()
-    const client = await asker.autocompleteInquire('Select Client name', clients)
+    const client = await asker.chooseClient(clients)
     const moment = loader.load('moment')
 
     const montly = {
