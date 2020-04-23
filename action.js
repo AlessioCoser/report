@@ -6,7 +6,7 @@ module.exports = function(loader, toggl, timeSlotter, asker, config) {
 
   this.run = async () => {
     const clients = await toggl.getClients()
-    const client = await chooseClient(asker, clients)
+    const client = await asker.autocompleteInquire('Select Client name', clients)
     const moment = loader.load('moment')
 
     const montly = {
@@ -24,21 +24,6 @@ module.exports = function(loader, toggl, timeSlotter, asker, config) {
   this.help = () => {
     return "download client report as PDF"
   }
-}
-
-async function chooseClient(asker, clients) {
-  const choices = convertToChoices(clients)
-
-  return asker.autocompleteInquire('Select Client name', choices)
-}
-
-function convertToChoices(clients) {
-  return clients.map(it => {
-    return {
-      name: it.name,
-      value: it
-    }
-  })
 }
 
 async function getPdf(toggl, client, workspace, start, end) {
