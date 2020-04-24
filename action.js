@@ -3,7 +3,6 @@ const path = require('path')
 const { homedir } = require('os')
 
 module.exports = function(loader, toggl, timeSlotter, asker, config) {
-  const moment = loader.load('moment')
 
   this.run = async () => {
     const clients = await toggl.getClients()
@@ -68,6 +67,7 @@ module.exports = function(loader, toggl, timeSlotter, asker, config) {
   }
 
   function last_months() {
+    const moment = loader.load('moment')
     let number = 10
     let months = [...Array(number).keys()].map(it => moment().add(-it, 'month'))
     return months.map(it => {
