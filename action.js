@@ -7,8 +7,8 @@ module.exports = function(loader, toggl, timeSlotter, asker, config) {
   this.run = async () => {
     const clients = await toggl.getClients()
     const client = await asker.chooseClient(clients)
-    const monthly = await asker.autocompleteInquire('Pick month', last_months())
-    const filename = await asker_inquireInputWithDefault('Where do you want to save the report?', defaultFileName(client, monthly))
+    const monthly = await asker.autocomplete('Pick month', last_months())
+    const filename = await asker.input('Where do you want to save the report?', defaultFileName(client, monthly))
     status("... collecting data")
     const summary = await getPdf(client.id, config.togglWorkspace, monthly.start.format('YYYY-MM-DD'), monthly.end.format('YYYY-MM-DD'))
     status("... writing PDF")
@@ -57,13 +57,8 @@ module.exports = function(loader, toggl, timeSlotter, asker, config) {
     }
   }
 
-  async function asker_inquireInputWithDefault(message, defaultResponse) {
-    const response = await asker.inquire(`${message} \x1b[2m(${defaultResponse})\x1b[0m`, 'input')
-    return response.trim() == '' ? defaultResponse : response
-  }
-
   function defaultFileName(client, monthly) {
-    return path.join(homedir(), '/Desktop/', `${client.name.toLowerCase()}_report_${monthly.start.format('YYYY_MM')}.pdf`)
+    return path.join(homedir(), '/Desktop/', `${client.name.toLowerCase()}_report_${monthly.start.format('YYYY-MM')}.pdf`)
   }
 
   function last_months() {
