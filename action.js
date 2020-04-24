@@ -10,10 +10,10 @@ module.exports = function(loader, toggl, timeSlotter, asker, config) {
     const moment = loader.load('moment')
 
     const monthly = await asker.autocompleteInquire("Pick month", last_months(moment))
-    const summary = await getPdf(toggl, client.id, config.togglWorkspace, montly.start.format("YYYY-MM-DD"), montly.end.format("YYYY-MM-DD"))
+    const summary = await getPdf(toggl, client.id, config.togglWorkspace, monthly.start.format("YYYY-MM-DD"), monthly.end.format("YYYY-MM-DD"))
 
     if(summary != null) {
-      writePdf(`${client.name.toLowerCase()}_report_${montly.start.format("YYYY-MM")}.pdf`, summary)
+      writePdf(`${client.name.toLowerCase()}_report_${monthly.start.format("YYYY-MM")}.pdf`, summary)
     }
   }
 
