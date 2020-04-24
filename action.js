@@ -64,7 +64,7 @@ module.exports = function(loader, toggl, timeSlotter, asker, config) {
   }
 
   function defaultFileName(client, monthly) {
-    return path.join(homedir(), '/Desktop/', `${client.name.toLowerCase()}_report_${monthly.start.format('YYYY-MM')}.pdf`)
+    return path.join(homedir(), '/Desktop/', `${client.name.toLowerCase()}_report_${monthly.start.format('YYYY_MM')}.pdf`)
   }
 
   function last_months() {
