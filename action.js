@@ -9,21 +9,29 @@ module.exports = function(loader, toggl, timeSlotter, asker, config) {
     const client = await asker.chooseClient(clients)
     const moment = loader.load('moment')
 
-    const montly = {
-      start: moment().add(-1, 'month').startOf("month"),
-      end: moment().add(-1, 'month').endOf("month"),
-    }
-
+    const monthly = await asker.autocompleteInquire("Pick month", last_months(moment))
     const summary = await getPdf(toggl, client.id, config.togglWorkspace, montly.start.format("YYYY-MM-DD"), montly.end.format("YYYY-MM-DD"))
 
     if(summary != null) {
-      writePdf(`${client.name.toLowerCase()}_report_month_${montly.start.format("YYYY-MM-DD")}.pdf`, summary)
+      writePdf(`${client.name.toLowerCase()}_report_${montly.start.format("YYYY-MM")}.pdf`, summary)
     }
   }
 
   this.help = () => {
     return "download client report as PDF"
   }
+}
+
+function last_months(moment) {
+  let number = 10
+  let months = [...Array(number).keys()].map(it => moment().add(-it, 'month'))
+  return months.map(it => {
+    return {
+      description: it.format("YYYY MMMM"),
+      start: moment(it).startOf('month'),
+      end: moment(it).endOf('month')
+    }
+  })
 }
 
 async function getPdf(toggl, client, workspace, start, end) {
